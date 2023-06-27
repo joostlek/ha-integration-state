@@ -1,6 +1,8 @@
 name: Generate
 
 on:
+  schedule:
+    - cron: "0 0 * * *"
   push:
     branches:
       - main
@@ -32,10 +34,30 @@ jobs:
           . venv/bin/activate
           pip install -r requirements.txt
 
-      - name: Generate XLSX
+      - name: Setup
         run: |
           . venv/bin/activate
-          python main.py
+          python src/setup.py
+
+      - name: Collect manifest attributes
+        run: |
+          . venv/bin/activate
+          python src/manifest.py
+
+      - name: Collect code features
+        run: |
+          . venv/bin/activate
+          python src/code_features.py
+
+      - name: Collect test features
+        run: |
+          . venv/bin/activate
+          python src/test_features.py
+
+      - name: Combine and publish to Google sheets
+        run: |
+          . venv/bin/activate
+          python src/combine.py
 
       - name: Upload result
         uses: actions/upload-artifact@v3
