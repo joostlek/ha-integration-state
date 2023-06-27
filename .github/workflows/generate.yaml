@@ -61,6 +61,9 @@ jobs:
         run: |
           . venv/bin/activate
           python src/combine.py
+        env:
+          SHEET_KEY: ${{ secrets.SHEET_KEY }}
+          GOOGLE_SERVICE_ACCOUNT: ${{ secrets.GOOGLE_SERVICE_ACCOUNT }}
 
       - name: Upload result
         uses: actions/upload-artifact@v3
