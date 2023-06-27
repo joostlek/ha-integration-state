@@ -69,4 +69,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: Result
-          path: state.xlsx
+          path: output/state.xlsx

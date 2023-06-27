@@ -17,7 +17,7 @@ result = pd.merge(result, test_features, how="left", on="domain")
 
 result.to_excel("output/state.xlsx")
 scopes = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
-print(os.environ.get("SHEET_KEY"))
+
 google_service_account = json.loads(os.environ.get("GOOGLE_SERVICE_ACCOUNT", "{}"))
 credentials = Credentials.from_service_account_info(google_service_account, scopes=scopes)
 
