@@ -1,0 +1,42 @@
+name: Generate
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  base:
+    name: Prepare base
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v3.5.3
+        with:
+          fetch-depth: 0
+
+      - name: Checkout Core repository
+        uses: actions/checkout@v3.5.3
+        with:
+          repository: home-assistant/core
+          path: core
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4.6.1
+        with:
+          python-version: 3.11
+
+      - name: Create Python virtual environment
+        run: |
+          python -m venv venv
+          . venv/bin/activate
+          pip install -r requirements.txt
+
+      - name: Generate XLSX
+        run: python main.py
+
+      - name: Upload result
+        uses: actions/upload-artifact@v3
+        with:
+          name: Result
+          path: state.xlsx
