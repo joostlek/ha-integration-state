@@ -34,6 +34,9 @@ jobs:
           . venv/bin/activate
           pip install -r requirements.txt
 
+      - name: Create output dir
+        run: mkdir output
+
       - name: Setup
         run: |
           . venv/bin/activate
