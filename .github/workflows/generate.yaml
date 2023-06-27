@@ -33,7 +33,9 @@ jobs:
           pip install -r requirements.txt
 
       - name: Generate XLSX
-        run: python main.py
+        run: |
+          . venv/bin/activate
+          python main.py
 
       - name: Upload result
         uses: actions/upload-artifact@v3
