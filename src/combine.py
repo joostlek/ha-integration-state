@@ -17,11 +17,12 @@ result = pd.merge(result, test_features, how="left", on="domain")
 
 result.to_excel("output/state.xlsx")
 scopes = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
+print(os.environ.get("SHEET_KEY"))
 google_service_account = json.loads(os.environ.get("GOOGLE_SERVICE_ACCOUNT", "{}"))
 credentials = Credentials.from_service_account_info(google_service_account, scopes=scopes)
 
 gc = gspread.authorize(credentials)
-gs = gc.open_by_key(os.environ.get("sheet_key"))
+gs = gc.open_by_key(os.environ.get("SHEET_KEY"))
 worksheet1 = gs.worksheet("Current state")
 
 set_with_dataframe(worksheet=worksheet1, dataframe=result, include_index=False, include_column_header=True, resize=True)
