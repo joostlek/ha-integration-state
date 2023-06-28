@@ -10,10 +10,12 @@ base = pd.read_csv("output/base.csv", index_col=0)
 manifest = pd.read_csv("output/manifest.csv", index_col=0)
 code_features = pd.read_csv("output/code_features.csv", index_col=0)
 test_features = pd.read_csv("output/test_features.csv", index_col=0)
+python_ast = pd.read_csv("output/python_ast.csv", index_col=0)
 
 result = pd.merge(base, manifest, how="left", on="domain")
 result = pd.merge(result, code_features, how="left", on="domain")
 result = pd.merge(result, test_features, how="left", on="domain")
+result = pd.merge(result, python_ast, how="left", on="domain")
 
 result.to_excel("output/state.xlsx")
 scopes = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
