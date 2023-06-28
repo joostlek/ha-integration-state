@@ -1,5 +1,5 @@
 import os
-from _ast import ImportFrom, ClassDef, Attribute, Name
+from _ast import ImportFrom, ClassDef, Attribute, Name, Subscript
 
 import pandas as pd
 import ast
@@ -19,15 +19,15 @@ for integration_id, integration in df.iterrows():
         with open(f"core/homeassistant/components/{domain}/__init__.py") as init_file:
             structure = ast.parse(init_file.read())
 
-            if domain == "iaqualink":
+            if domain == "iqvia":
                 pass
 
             imports_entity = False
             for expression in structure.body:
                 if isinstance(expression, ImportFrom):
-                    if expression.module in ("homeassistant.helpers.entity", "homeassistant.helpers"):
+                    if expression.module in ("homeassistant.helpers.entity", "homeassistant.helpers", "homeassistant.helpers.update_coordinator"):
                         for imported_name in expression.names:
-                            if imported_name.name in ("Entity", "entity"):
+                            if imported_name.name in ("Entity", "entity", "CoordinatorEntity"):
                                 imports_entity = True
                                 break
 
@@ -38,6 +38,11 @@ for integration_id, integration in df.iterrows():
                             if base_class.id == "Entity" and imports_entity:
                                 df.at[integration_id, "Base entity in init"] = True
                                 break
+                        elif isinstance(base_class, Subscript):
+                            if isinstance(base_class.value, Name):
+                                if base_class.value.id == "CoordinatorEntity" and imports_entity:
+                                    df.at[integration_id, "Base entity in init"] = True
+                                    break
 
             imports_coordinator = False
             for expression in structure.body:
