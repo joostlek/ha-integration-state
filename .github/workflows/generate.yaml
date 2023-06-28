@@ -57,6 +57,11 @@ jobs:
           . venv/bin/activate
           python src/test_features.py
 
+      - name: Collect AST features
+        run: |
+          . venv/bin/activate
+          python src/python_ast.py
+
       - name: Combine and publish to Google sheets
         run: |
           . venv/bin/activate
