@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 
-from .const import ENTITY_PLATFORMS
+from const import ENTITY_PLATFORMS
 
 df = pd.read_csv("output/base.csv", index_col=0)
 
