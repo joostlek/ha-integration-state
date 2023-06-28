@@ -62,9 +62,9 @@ for integration_id, integration in df.iterrows():
 
             for expression in structure.body:
                 if isinstance(expression, ImportFrom):
-                    if expression.module == "homeassistant.components.sensor":
+                    if expression.module in ("homeassistant.components.sensor", "homeassistant.components.binary_sensor", "homeassistant.components.switch", "homeassistant.helpers.entity"):
                         for imported_name in expression.names:
-                            if imported_name.name == "SensorEntityDescription":
+                            if imported_name.name in ("SensorEntityDescription", "BinarySensorEntityDescription", "SwitchEntityDescription", "EntityDescription"):
                                 df.at[integration_id, "Sensor descriptions in const"] = True
                                 break
 
