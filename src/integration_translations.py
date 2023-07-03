@@ -20,12 +20,14 @@ for integration_id, integration in df.iterrows():
         if "entity" in strings:
             for platform, translation_keys in strings["entity"].items():
                 for translation_key, translation in translation_keys.items():
-                    if translation.startswith('['):
-                        continue
-                    if translation in entity_naming:
-                        duplicate_entity_naming = duplicate_entity_naming + 1
-                    else:
-                        entity_naming.append(translation)
+                    if 'name' in translation:
+                        trans = translation['name']
+                        if trans.startswith('['):
+                            continue
+                        if trans in entity_naming:
+                            duplicate_entity_naming = duplicate_entity_naming + 1
+                        else:
+                            entity_naming.append(trans)
         if "config" in strings:
             if "step" in strings["config"]:
                 for step_id, step in strings["config"]["step"].items():
