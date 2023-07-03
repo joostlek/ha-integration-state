@@ -40,6 +40,17 @@ for domain in integrations:
                                 df_cf.loc[row.index, "amount"] = df_cf.loc[row.index, "amount"] + 1
                             else:
                                 df_cf.loc[len(df_cf)] = [translation_key, name, 1]
+        if "options" in strings:
+            if "step" in strings["options"]:
+                for step_id, step in strings["options"]["step"].items():
+                    if "data" in step:
+                        for translation_key, translation in step["data"].items():
+                            name = translation.replace("%", "").replace("::", "_").replace(":", "_").replace("'", "_")
+                            row = df_cf.query(f"translation_key == '{translation_key}' and value == '{name}'")
+                            if not row.empty:
+                                df_cf.loc[row.index, "amount"] = df_cf.loc[row.index, "amount"] + 1
+                            else:
+                                df_cf.loc[len(df_cf)] = [translation_key, name, 1]
 
 
 df = df.sort_values("amount", ascending=False)
