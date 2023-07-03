@@ -38,3 +38,13 @@ translation_value_worksheet = gs.worksheet("Translations by values")
 translation_values = pd.read_csv("output/translation_values.csv", index_col=0)
 
 set_with_dataframe(worksheet=translation_value_worksheet, dataframe=translation_values, include_index=False, include_column_header=True, resize=True)
+
+translation_config_flow_key_worksheet = gs.worksheet("Translations by config flow keys")
+translation_config_flow_keys = pd.read_csv("output/translation_config_flow_keys.csv", index_col=0)
+
+set_with_dataframe(worksheet=translation_config_flow_key_worksheet, dataframe=translation_config_flow_keys, include_index=False, include_column_header=True, resize=True)
+
+translation_config_flow_value_worksheet = gs.worksheet("Translations by config flow values")
+translation_config_flow_values = pd.read_csv("output/translation_config_flow_values.csv", index_col=0)
+
+set_with_dataframe(worksheet=translation_config_flow_value_worksheet, dataframe=translation_config_flow_values, include_index=False, include_column_header=True, resize=True)
