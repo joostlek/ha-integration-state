@@ -20,6 +20,8 @@ for integration_id, integration in df.iterrows():
         if "entity" in strings:
             for platform, translation_keys in strings["entity"].items():
                 for translation_key, translation in translation_keys.items():
+                    if translation.startswith('['):
+                        continue
                     if translation in entity_naming:
                         duplicate_entity_naming = duplicate_entity_naming + 1
                     else:
@@ -29,6 +31,8 @@ for integration_id, integration in df.iterrows():
                 for step_id, step in strings["config"]["step"].items():
                     if "data" in step:
                         for translation_key, translation in step["data"].items():
+                            if translation.startswith('['):
+                                continue
                             if translation in config_flow_naming:
                                 duplicate_config_flow_naming = duplicate_config_flow_naming + 1
                             else:
@@ -38,6 +42,8 @@ for integration_id, integration in df.iterrows():
                 for step_id, step in strings["options"]["step"].items():
                     if "data" in step:
                         for translation_key, translation in step["data"].items():
+                            if translation.startswith('['):
+                                continue
                             if translation in config_flow_naming:
                                 duplicate_config_flow_naming = duplicate_config_flow_naming + 1
                             else:
