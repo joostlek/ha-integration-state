@@ -28,7 +28,7 @@ for domain in integrations:
                         if not row.empty:
                             df.loc[row.index, "amount"] = df.loc[row.index, "amount"] + 1
                         else:
-                            df.loc[len(df)] = [translation_key, translation['name'], 1]
+                            df.loc[len(df)] = [translation_key, name, 1]
         if "config" in strings:
             if "step" in strings["config"]:
                 for step_id, step in strings["config"]["step"].items():
@@ -39,7 +39,7 @@ for domain in integrations:
                             if not row.empty:
                                 df_cf.loc[row.index, "amount"] = df_cf.loc[row.index, "amount"] + 1
                             else:
-                                df_cf.loc[len(df_cf)] = [translation_key, translation, 1]
+                                df_cf.loc[len(df_cf)] = [translation_key, name, 1]
 
 
 df = df.sort_values("amount", ascending=False)
