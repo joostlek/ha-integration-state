@@ -31,10 +31,7 @@ df = df.sort_values("amount", ascending=False)
 df.to_csv("output/translation_values.csv")
 
 df = df.drop(columns=["value"])
-# print(df.head())
 df = df.groupby(["translation_key"]).sum()
-print(df.head())
 
-# print(df.to_frame().rename(columns={"translation_key": "amount"}).reset_index().sort_values(["amount"], ascending=False).head())
 df = df.reset_index().sort_values(["amount"], ascending=False)
 df.to_csv("output/translation_keys.csv")
