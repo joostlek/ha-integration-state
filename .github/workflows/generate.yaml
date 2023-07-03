@@ -67,6 +67,11 @@ jobs:
           . venv/bin/activate
           python src/translations.py
 
+      - name: Collect Integration Translation stats
+        run: |
+          . venv/bin/activate
+          python src/integration_translations.py
+
       - name: Combine and publish to Google sheets
         run: |
           . venv/bin/activate
