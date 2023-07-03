@@ -28,3 +28,13 @@ gs = gc.open_by_key(os.environ.get("SHEET_KEY"))
 worksheet1 = gs.worksheet("Current state")
 
 set_with_dataframe(worksheet=worksheet1, dataframe=result, include_index=False, include_column_header=True, resize=True)
+
+translation_key_worksheet = gs.worksheet("Translations by keys")
+translation_keys = pd.read_csv("output/translation_keys.csv", index_col=0)
+
+set_with_dataframe(worksheet=translation_key_worksheet, dataframe=translation_keys, include_index=False, include_column_header=True, resize=True)
+
+translation_value_worksheet = gs.worksheet("Translations by values")
+translation_values = pd.read_csv("output/translation_values.csv", index_col=0)
+
+set_with_dataframe(worksheet=translation_value_worksheet, dataframe=translation_values, include_index=False, include_column_header=True, resize=True)
