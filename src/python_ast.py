@@ -8,7 +8,7 @@ df = pd.read_csv("output/base.csv", index_col=0)
 
 df["Base entity in init"] = None
 df["Coordinator in init"] = None
-df["Sensor descriptions in const"] = None
+df["Diagnostic syrupy test"] = None
 
 
 for integration_id, integration in df.iterrows():
@@ -60,18 +60,19 @@ for integration_id, integration in df.iterrows():
                             if base_class.attr == "DataUpdateCoordinator" and imports_coordinator:
                                 df.at[integration_id, "Coordinator in init"] = True
                                 break
-    if os.path.isfile(f"core/homeassistant/components/{domain}/const.py"):
-        df.at[integration_id, "Sensor descriptions in const"] = False
-        with open(f"core/homeassistant/components/{domain}/const.py") as const_file:
-            structure = ast.parse(const_file.read())
+    if os.path.isfile(f"core/homeassistant/components/{domain}/diagnostics.py"):
+        df.at[integration_id, "Diagnostic syrupy test"] = False
+        if os.path.isfile(f"core/tests/components/{domain}/test_diagnostics.py"):
+            with open(f"core/tests/components/{domain}/test_diagnostics.py") as const_file:
+                structure = ast.parse(const_file.read())
 
-            for expression in structure.body:
-                if isinstance(expression, ImportFrom):
-                    if expression.module in ("homeassistant.components.sensor", "homeassistant.components.binary_sensor", "homeassistant.components.switch", "homeassistant.helpers.entity"):
-                        for imported_name in expression.names:
-                            if imported_name.name in ("SensorEntityDescription", "BinarySensorEntityDescription", "SwitchEntityDescription", "EntityDescription"):
-                                df.at[integration_id, "Sensor descriptions in const"] = True
-                                break
+                for expression in structure.body:
+                    if isinstance(expression, ImportFrom):
+                        if expression.module == "syrupy":
+                            for imported_name in expression.names:
+                                if imported_name.name in "SnapshotAssertion":
+                                    df.at[integration_id, "Diagnostic syrupy test"] = True
+                                    break
 
 
 df.to_csv("output/python_ast.csv")
