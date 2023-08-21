@@ -8,7 +8,7 @@ df = pd.read_csv("output/base.csv", index_col=0)
 
 df["Base entity in init"] = None
 df["Coordinator in init"] = None
-df["Diagnostic syrupy test"] = None
+df["Diagnostic no syrupy test"] = None
 
 
 for integration_id, integration in df.iterrows():
@@ -61,7 +61,7 @@ for integration_id, integration in df.iterrows():
                                 df.at[integration_id, "Coordinator in init"] = True
                                 break
     if os.path.isfile(f"core/homeassistant/components/{domain}/diagnostics.py"):
-        df.at[integration_id, "Diagnostic syrupy test"] = False
+        df.at[integration_id, "Diagnostic no syrupy test"] = True
         if os.path.isfile(f"core/tests/components/{domain}/test_diagnostics.py"):
             with open(f"core/tests/components/{domain}/test_diagnostics.py") as const_file:
                 structure = ast.parse(const_file.read())
@@ -71,7 +71,7 @@ for integration_id, integration in df.iterrows():
                         if expression.module == "syrupy":
                             for imported_name in expression.names:
                                 if imported_name.name in "SnapshotAssertion":
-                                    df.at[integration_id, "Diagnostic syrupy test"] = True
+                                    df.at[integration_id, "Diagnostic no syrupy test"] = False
                                     break
 
 
