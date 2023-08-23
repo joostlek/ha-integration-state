@@ -70,7 +70,7 @@ for integration_id, integration in df.iterrows():
 
                 for expression in structure.body:
                     if isinstance(expression, ImportFrom):
-                        if expression.module == "syrupy":
+                        if expression.module in ("syrupy", "syrupy.assertion"):
                             for imported_name in expression.names:
                                 if imported_name.name == "SnapshotAssertion":
                                     df.at[integration_id, "Diagnostic no syrupy test"] = False
