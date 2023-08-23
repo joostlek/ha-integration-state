@@ -9,6 +9,8 @@ df = pd.read_csv("output/base.csv", index_col=0)
 df["Base entity in init"] = None
 df["Coordinator in init"] = None
 df["Diagnostic no syrupy test"] = None
+df["Probably settable name in config flow"] = None
+df["Probably settable scan interval in config flow"] = None
 
 
 for integration_id, integration in df.iterrows():
@@ -70,9 +72,23 @@ for integration_id, integration in df.iterrows():
                     if isinstance(expression, ImportFrom):
                         if expression.module == "syrupy":
                             for imported_name in expression.names:
-                                if imported_name.name in "SnapshotAssertion":
+                                if imported_name.name == "SnapshotAssertion":
                                     df.at[integration_id, "Diagnostic no syrupy test"] = False
                                     break
+    if os.path.isfile(f"core/homeassistant/components/{domain}/config_flow.py"):
+        df.at[integration_id, "Probably settable name in config flow"] = False
+        df.at[integration_id, "Probably settable scan interval in config flow"] = False
+        with open(f"core/homeassistant/components/{domain}/config_flow.py") as const_file:
+            structure = ast.parse(const_file.read())
+
+            for expression in structure.body:
+                if isinstance(expression, ImportFrom):
+                    if expression.module == "homeassistant.const":
+                        for imported_name in expression.names:
+                            if imported_name.name == "CONF_NAME":
+                                df.at[integration_id, "Probably settable name in config flow"] = True
+                            if imported_name.name == "CONF_SCAN_INTERVAL":
+                                df.at[integration_id, "Probably settable scan interval in config flow"] = True
 
 
 df.to_csv("output/python_ast.csv")
