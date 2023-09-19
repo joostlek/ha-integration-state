@@ -55,31 +55,15 @@ for integration_id, integration in df.iterrows():
                                 imports_coordinator = True
                                 break
 
-            for expression in structure.body:
-                if isinstance(expression, ClassDef):
-                    for base_class in expression.bases:
-                        if isinstance(base_class, Attribute):
-                            if base_class.attr == "DataUpdateCoordinator" and imports_coordinator:
-                                df.at[integration_id, "Coordinator in init"] = True
-                                break
-    if os.path.isfile(f"core/homeassistant/components/{domain}/diagnostics.py"):
-        df.at[integration_id, "Diagnostic no syrupy test"] = True
-        if os.path.isfile(f"core/tests/components/{domain}/test_diagnostics.py"):
-            with open(f"core/tests/components/{domain}/test_diagnostics.py") as const_file:
-                structure = ast.parse(const_file.read())
-
+            if imports_coordinator:
                 for expression in structure.body:
-                    if isinstance(expression, ImportFrom):
-                        if expression.module in ("syrupy", "syrupy.assertion"):
-                            for imported_name in expression.names:
-                                if imported_name.name == "SnapshotAssertion":
-                                    df.at[integration_id, "Diagnostic no syrupy test"] = False
-                                    break
-    if os.path.isfile(f"core/homeassistant/components/{domain}/config_flow.py"):
-        df.at[integration_id, "Probably settable name in config flow"] = False
-        df.at[integration_id, "Probably settable scan interval in config flow"] = False
-        with open(f"core/homeassistant/components/{domain}/config_flow.py") as const_file:
-            structure = ast.parse(const_file.read())
+                    if isinstance(expression, ClassDef):
+                        for base_class in expression.bases:
+                            if isinstance(base_class, Subscript):
+                                if isinstance(base_class.value, Name):
+                                    if base_class.value.id == "DataUpdateCoordinator":
+                                        df.at[integration_id, "Coordinator in init"] = True
+                                        break
 
             for expression in structure.body:
                 if isinstance(expression, ImportFrom):
