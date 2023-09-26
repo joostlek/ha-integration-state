@@ -62,6 +62,12 @@ jobs:
           . venv/bin/activate
           python src/python_ast.py
 
+      - name: Collect usage info
+        run: |
+          . venv/bin/activate
+          wget https://analytics.home-assistant.io/data.json
+          python src/usage.py
+
       - name: Collect Translation stats
         run: |
           . venv/bin/activate
