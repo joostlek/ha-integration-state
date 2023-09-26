@@ -4,7 +4,7 @@ import pandas as pd
 from const import ENTITY_PLATFORMS
 
 df = pd.read_csv("output/base.csv", index_col=0)
-files = [*ENTITY_PLATFORMS, "config_flow"]
+files = ["config_flow", *ENTITY_PLATFORMS]
 for entity_platform in files:
     df[entity_platform] = False
 
