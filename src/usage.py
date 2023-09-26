@@ -13,7 +13,7 @@ with open("data.json") as analytics:
     for integration_id, integration in df.iterrows():
         domain = integration["domain"]
         if domain in integration_data:
-            df["Users"] = integration_data[domain]
+            df.at[integration_id, "Users"] = integration_data[domain]
 
 
 df.to_csv("output/usage.csv")
