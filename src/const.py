@@ -10,9 +10,11 @@ ENTITY_PLATFORMS = [
     "date",
     "datetime",
     "device_tracker",
+    "event",
     "fan",
     "humidifier",
     "image",
+    "lawn_mower",
     "light",
     "lock",
     "media_player",
@@ -25,9 +27,11 @@ ENTITY_PLATFORMS = [
     "switch",
     "text",
     "time",
+    "todo",
     "tts",
     "update",
     "vacuum",
+    "wake_word",
     "water_heater",
     "weather"
 ]
