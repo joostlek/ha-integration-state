@@ -10,8 +10,11 @@ df["IoT class"] = None
 df["Integration type"] = None
 df["Codeowners"] = 0
 df["External library"] = False
-df["Bluetooth zeroconf"] = False
-df["Network zeroconf"] = False
+df["Bluetooth discovery"] = False
+df["Zeroconf discovery"] = False
+df["SSDP discovery"] = False
+df["DHCP discovery"] = False
+df["Homekit discovery"] = False
 df["Application credentials"] = False
 
 for integration_id, integration in df.iterrows():
@@ -24,8 +27,11 @@ for integration_id, integration in df.iterrows():
         df.at[integration_id, "Codeowners"] = len(manifest.get("codeowners", []))
         df.at[integration_id, "Integration type"] = manifest.get("integration_type")
         df.at[integration_id, "IoT class"] = manifest.get("iot_class")
-        df.at[integration_id, "Bluetooth zeroconf"] = "bluetooth" in manifest
-        df.at[integration_id, "Network zeroconf"] = "zeroconf" in manifest
+        df.at[integration_id, "Bluetooth discovery"] = "bluetooth" in manifest
+        df.at[integration_id, "Zeroconf discovery"] = "zeroconf" in manifest
+        df.at[integration_id, "SSDP discovery"] = "ssdp" in manifest
+        df.at[integration_id, "DHCP discovery"] = "dhcp" in manifest
+        df.at[integration_id, "Homekit discovery"] = "homekit" in manifest
         df.at[integration_id, "Application credentials"] = "application_credentials" in manifest.get("dependencies", [])
 
 
