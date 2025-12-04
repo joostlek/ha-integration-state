@@ -13,12 +13,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repository
-        uses: actions/checkout@v5.0.1
+        uses: actions/checkout@v6.0.1
         with:
           fetch-depth: 0
 
       - name: Checkout Core repository
-        uses: actions/checkout@v5.0.1
+        uses: actions/checkout@v6.0.1
         with:
           repository: home-assistant/core
           path: core
